@@ -1,0 +1,4 @@
+1) en consola poner npm run dev para iniciar el servidor
+2) para cortar el sevidor ctrl + c (y pulsar "s" de si de salir)
+3) npm run build para hacer un "build" del proyecto despues de haber hecho cambios/actualizaciones
+  en los archivos de nodejs.

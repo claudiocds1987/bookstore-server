@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const router = express_1.Router();
+const sales_controller_1 = require("../controllers/sales.controller");
+router.post("/sales/create", sales_controller_1.createSale);
+router.get("/sales/lastIdSale", sales_controller_1.getLastIdSale);
+router.get("/sales/customer/:id_user", sales_controller_1.getSalesByCustomerId);
+router.get("/sales/countFromMonth/:year/:month", sales_controller_1.countSalesFromMonth);
+router.get("/sales/revenueByYearAndMonth/:year/:month", sales_controller_1.salesRevenueByYearAndMonth);
+router.get("/sales/countFromYear/:year", sales_controller_1.countSalesFromYear);
+router.get("/sales/revenueFromYear/:year", sales_controller_1.salesRevenueFromYear);
+router.get("/sales/bookTopSales", sales_controller_1.getBookTopSales);
+router.get("/sales/annualSales/:year", sales_controller_1.getAnnualSales);
+router.get("/sales/averageAnnualSales/:year", sales_controller_1.getAverageAnnualSales);
+exports.default = router;
