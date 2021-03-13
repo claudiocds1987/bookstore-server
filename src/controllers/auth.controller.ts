@@ -29,7 +29,7 @@ export const signup = async (req: Request, res: Response) => {
   // insert en PostgreSQL
   await pool
     .query(
-      "INSERT INTO users (pass, registration_date, email, username) VALUES ($1, $2, $3, $4) RETURNING id_user",
+      "INSERT INTO public.users (pass, registration_date, email, username) VALUES ($1, $2, $3, $4) RETURNING id_user",
       [hash, registration_date, email, username]
     )
     .then((data) => {

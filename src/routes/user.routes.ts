@@ -6,7 +6,7 @@ import { getUsers, getUserByUserName, existUsername, existeUserEmail, deleteUser
 
 router.get('/users', getUsers); // get todos los usuarios
 router.get('/users/:username', getUserByUserName); //get usuario por username
-//router.post('/users', createUser); // crear usuario
+//router.post('/users', createUser); // crear usuario se hace en auth.controller.ts
 router.get('/users/exist/username/:username', existUsername); 
 router.get('/users/exist/email/:email', existeUserEmail);
 router.put('/users/:username', updateUser); // actualizar usuario
