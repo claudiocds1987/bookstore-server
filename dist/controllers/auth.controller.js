@@ -38,7 +38,7 @@ exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const hash = yield bcrypt.hash(pass, 10); // encripta el password
     // insert en PostgreSQL
     yield database_1.pool
-        .query("INSERT INTO users (pass, registration_date, email, username) VALUES ($1, $2, $3, $4) RETURNING id_user", [hash, registration_date, email, username])
+        .query("INSERT INTO public.users (pass, registration_date, email, username) VALUES ($1, $2, $3, $4) RETURNING id_user", [hash, registration_date, email, username])
         .then((data) => {
         res
             .status(200)

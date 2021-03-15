@@ -86,7 +86,7 @@ export const getAuthors = async (
     return res.status(200).json(response.rows);
   } catch (e) {
     console.log(e);
-    return res.status(500).json("Internal server error");
+    return res.status(500).json("Internal server error, no s epudo obtener los autores");
   }
 };
 
