@@ -74,7 +74,7 @@ exports.getAuthors = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (e) {
         console.log(e);
-        return res.status(500).json("Internal server error");
+        return res.status(500).json("Internal server error, no s epudo obtener los autores");
     }
 });
 exports.getAuthorByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
