@@ -16,6 +16,15 @@ const uuid = require('uuid')
 const app = express(); // inicializo express
 const cors = require('cors'); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
 const path = require('path');
+
+const { Pool } = require('pg');
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
  
 //rutas
 import authRoutes from './routes/auth.routes'
