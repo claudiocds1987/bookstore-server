@@ -62,3 +62,6 @@ app.set('port', process.env.PORT || 3000);
 app.listen(app.get('port'), () => {
     console.log('usuarios server on port:', app.get('port'));
 });
+app.get('/', (req, res) => {
+    res.send('Welcome to my API');
+});
