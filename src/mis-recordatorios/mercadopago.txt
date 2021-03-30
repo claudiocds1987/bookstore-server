@@ -1,0 +1,209 @@
+EXPLICACION DE COMO IMPLEMENTE MERCADOPAGO
+
+IMPORTANTE: Antes que nada, si estas logeado en mercadopago, cerra la sesíon, porque sino te va a dar errores.
+
+URLS DEL TUTORIAL: 
+(El tutorial lo hace solo para la compra de 1 solo producto, pero yo lo hice incluso para varios productos.
+Tambien acalarar que en el tutorial, el producto lo envia directamente desde el formulario en HTML sin utilizar 
+ningun servicio. Desde Angular intenté llevarle los productos a node/express utilizando mi servicio 
+"mercadopago.service.ts", pero me daba un error de "CORS policy". Intenté solucionarlo incluso siguiendo 
+stackoverflow pero tampoco dió resultado).
+
+PARTE 1: https://www.youtube.com/watch?v=eeePYXduz8M
+PARTE 2: https://www.youtube.com/watch?v=dF45h5snz9g&t=86s
+PARTE 3: https://www.youtube.com/watch?v=U7GUmdM4xsY&t=488s
+PARTE 4: https://www.youtube.com/watch?v=633C1k1H7II
+
+PASO 1 (DESDE ANGULAR):
+
+Desde Angular en el componente create-order.component.html el formulario:
+
+<form #form action="http://localhost:3000/prueba" method="post">
+    <div *ngFor="let data of bookList; index as i">
+        <input type="hidden" name="title" [value]="data.name" />
+        <input type="hidden" name="price" [value]="data.price" />
+        <input type="hidden" name="quantity" [value]="data.quantity" />
+    </div>
+    <input type="hidden" name="totalProducts" [value]="bookList.length" />
+    <button
+        type="submit"
+        class="btn btn-success"
+        (click)="form.submit()"
+    >
+        mercado pago
+    </button>
+</form>
+
+a)  En el action="http://localhost:3000/prueba" es la ruta de mi servidor node en donde le envio el producto, o
+    los productos. Cuando la web corra en servidor Heroku, cambiarle la ruta.
+
+b)  El "bookList" que recorre el for, esta el producto o los productos. Adentro del For hay 3 input,
+    el 1er input guarda el nombre del producto, el 2do el precio unitario y el 3ro la cantidad de ese producto.
+    Ademas, afuera del for, hay un 4to input que guarda la cantidad total de productos a comprar.  
+    (IMPORTANTE que los input tengan el atributo "name", para cuando se envien al servidor "node"). 
+    
+    Por ejemplo, suponiendo que "bookList" tiene 3 libros:
+
+    libro 1 = { name: "libro 1", price: 1800, quantity: 1 }
+    libro 2 = { name: "libro 2", price: 1500, quantity: 1 }
+    libro 1 = { name: "libro 3", price: 800, quantity: 2  }
+   
+    Entonces los input van a guardar la info de esta forma: 
+
+     <div *ngFor="let data of bookList; index as i">
+        <input type="hidden" name="title" [value]="libro 1" />
+        <input type="hidden" name="price" [value]="1800" />
+        <input type="hidden" name="quantity" [value]="1" />
+        <input type="hidden" name="title" [value]="libro 2" />
+        <input type="hidden" name="price" [value]="1500" />
+        <input type="hidden" name="quantity" [value]="1" />
+        <input type="hidden" name="title" [value]="libro 3" />
+        <input type="hidden" name="price" [value]="800" />
+        <input type="hidden" name="quantity" [value]="2" />
+    </div>
+    <input type="hidden" name="totalProducts" [value]="3" />
+
+c)  Al hacer el "submit" estos datos se van a enviar ir por "post" a la ruta:
+    http://localhost:3000/prueba de mi servidor "node". Y listo!.
+
+---------------------------------------------------------------------------------------------------------
+
+PASO 2 (LADO NODE/EXPRESS):
+
+Recibiendo los datos enviados desde el formulario html:
+importante seguir los pasos tal cual estan.
+
+Aca viene la aclaracion del porque haberle puesto el atributo "name" a los inputs: 
+un servidor tiene un "request"(data/info que recibe) y un "response"(respuesta del servidor).
+En este caso "node" en el "request" esta recibiendo 4 "body", en c/u de los body estan agrupados 
+en un "string" todo los titulos, en otro body todos los precios, en el otro todas las cantidades 
+por producto y en el ultimo body la cantidad total de productos a comprar. Entonces: por ejemplo,
+para acceder al body que contiene todos los titulos debo poner req.body.nombreDelNameDelInput del 
+formulario html que guardó el titulo, en este caso seria "req.body.title",
+"req.body.price"(para los precios), "req.body.quantity"(para los precios), 
+"req.body.totalProducts"(cantidad total de productos a comprar).
+
+Entendido lo anterior, creamos el archivo "mercadopago.controller.ts" y pegar este codigo:
+
+// SDK de Mercado Pago
+const mercadopago = require("mercadopago");
+import { Compramp } from "../compramp";
+import { Request, Response } from "express";
+
+mercadopago.configure({
+  // el token es el de "produccion" que te da mercadopago, seria el token del vendedor (el que recibe la plata).
+  access_token:
+    "APP_USR-6727410487429690-020719-843ab473f4a5a89f1c2d74b496b704cd-523979565",
+});
+
+export const checkout = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  // 1) obtengo el "total de productos" que se van a comprar en mercadopago (puede ser 1 o varios productos).
+  const totalProducts = parseInt(req.body.totalProducts);
+
+  // 2) Creo un objeto "productos", cada atributo va a guardar la info de los body title, price y quantity.
+
+  const productos = {
+    titulo: req.body.title,
+    precio: req.body.price,
+    cantidad: req.body.quantity,
+  };
+
+  /* Esto internamente quedaria asi:
+
+const productos = {
+    titulo: libro 1, libro 2, libro 3
+    precio: 1800, 1500, 800
+    cantidad: 1, 1, 2
+};
+
+para verlo por consola:
+for(let data of productos.titulo){console.log(data)}
+for(let data of productos.precio){console.log(data)}
+for(let data of productos.cantidad){console.log(data)}
+*/
+
+  // 3) Creo un array llamado "items" de tipo "Compramp", NO CAMBIARLE EL NOMBRE sino va a dar error.
+  let items: Compramp[] = []; // este array es el que se va a enviar a api mercadopago
+
+  /* mercadopago como "regla" necesita que el producto/s que le vayas a enviar esten dentro de su objeto
+    array llamado "items" (no cambies el nombre de este array porque te va a dar un error). Este objeto array 
+    "items" tiene la siguiente estructura (segun la documentacion de mercadopago para la compra de 1 solo 
+    producto):
+
+    items: [
+        {
+            title: 'Mi producto',
+            unit_price: 100,
+            quantity: 1
+        },
+    ],
+
+    Entonces, como puede ser 1 producto o varios, lo que yo hice fue crear aparte un archivo "compramp.ts",
+    en donde declaro una interface llamada "Compramp" con las mismas propiedades que "items":
+
+    export interface Compramp{
+        title: string,
+        unit_price: number,
+        quantity: number 
+    } */
+
+  // 4) Guardando los datos en el array "items" para enviarselo a mercadopago
+
+  if (totalProducts === 1) {
+    // si hay 1 solo producto
+    items.push({
+      title: req.body.title.toString(),
+      unit_price: parseInt(req.body.price.toString()),
+      quantity: parseInt(req.body.quantity.toString()),
+    });
+  } else {
+    // si hay mas de 1 producto
+    for (let i = 0; i < totalProducts; i++) {
+      items.push({
+        title: productos.titulo[i].toString(),
+        unit_price: parseInt(productos.precio[i].toString()),
+        quantity: parseInt(productos.cantidad[i].toString()),
+      });
+    }
+  }
+
+  // 5) Ahora, el array "items" debe cargarse dentro del objeto que proporciona mercadopago llamado "preference".
+  //    no cambiarlo de nombre, caso contrario va a dar error.
+
+  try {
+    // return res.status(200).json("recibido");
+
+    // objeto preference que proporciona mercadopago
+    let preference = {
+      items, // array items con todos los productos
+
+      // dependiendo del estado de la compra, mercadopago va a hacer un redirect a estas urls.
+      back_urls: {
+        success: "https://www.youtube.com", // si la compra fue realizada
+        failure: "http://www.tu-sitio/failure", // si falló la compra
+        pending: "http://www.tu-sitio/pending", // si esta en estado pendiente
+      },
+      auto_return: "approved",
+    };
+
+    // enviando el objeto "preference" a mercado pago
+    mercadopago.preferences
+      .create(preference)
+      .then(function (response) {
+        console.log(response.body);
+        // redirije a pagina de mercadopago para realizar la compra
+        res.redirect(response.body.init_point);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal server error");
+  }
+};
+
+// FIN.

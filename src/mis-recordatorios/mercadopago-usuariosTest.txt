@@ -1,0 +1,36 @@
+PARA PROBAR API MERCADO PAGO SE NECESITAN 2 USUARIOS COMO PRUEBA, 
+UNO COMO VENDEDOR(lado backend) Y EL OTRO COMO COMPRADOR.
+EN EL BACKEND SOLO SE NECESITA EL ACCES TOKEN DE PRODUCCION DEL VENDEDOR. 
+
+PARA OBTENER LAS CREDENCIALES DE PRODUCCION/PRUEBA COMO EL "ACCESS TOKEN" DEL VENDEDOR/COMPRADOR HAY QUE INGRESAR A LA
+PAGINA DE MERCADO PAGO CON LOS DATOS NICKNAME O EMAIL Y LA PASSWORD DEL VENDEDOR/COMPRADOR:
+forma larga:
+a) ir a la opcion "tu negocio" -> Configuración.
+b) en Configuración ir abajo de todo donde dice "Credenciales" clic en btn Acceder.
+forma corta: (estando logeado) ir a https://www.mercadopago.com.ar/settings/account/credentials
+----------------------------------------------------------------------------------------------------------
+
+DATOS USUARIO VENDEDOR: (estos datos los saque del video: https://www.youtube.com/watch?v=VgXsbJB6rY0)
+
+nickname: TETE3764861
+email: test_user_75140150@testuser.com
+password: qatest89
+
+"Credenciales de producción usuario vendedor":
+
+Public Key:
+APP_USR-7fce730c-122c-4724-ad7a-de0fd1b38779
+Access Token:
+APP_USR-6727410487429690-020719-843ab473f4a5a89f1c2d74b496b704cd-523979565
+Client ID:
+6727410487429690
+Client Secret:
+6UuaLHApd0k2gaN6c8eYGjpZWehEkhRC
+------------------------------------------------------------------------------------------------------------
+DATOS DE USUARIOS COMPRADORES:
+
+COMPRADOR 1 (estos datos los saque del video min 2:44: https://www.youtube.com/watch?v=U7GUmdM4xsY&t=22s).
+
+email: test_user_95611200@testuser.com
+usuario: TESTGMM1JIJB
+password: qatest3564
