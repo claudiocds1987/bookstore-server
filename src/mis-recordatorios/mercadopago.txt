@@ -207,3 +207,28 @@ for(let data of productos.cantidad){console.log(data)}
 };
 
 // FIN.
+
+"Las back_urls" son las rutas qe se le indican a mercadopago para que haga el redirect dependiendo del estado
+de la compra.
+
+
+// dependiendo del estado de la compra, mercadopago va a hacer un redirect a estas urls.
+      back_urls: {
+        success: "https://www.youtube.com", // si la compra fue realizada
+        failure: "http://www.tu-sitio/failure", // si falló la compra
+        pending: "http://www.tu-sitio/pending", // si esta en estado pendiente
+      },
+      auto_return: "approved",
+
+success: Cuando finaliza la compra de forma exitosa, en la api mercadopago aparece un contador con un aviso
+informando que se va a hacer un retorno automatico despues de finalizar el contador. Tambien hay un boton que
+dice "volver mi tienda", al darle clic supuestamente deberia hacer el redirect tmb, pero no fnciona bien. 
+
+failure: "http://www.tu-sitio/failure", // si falló la compra
+
+pending: "http://www.tu-sitio/pending", // Es decir "pending" es para que puedas volver a tu sitio antes de 
+realizar la compra en caso de que te arrepientas u otro motivo. Cuando le envias los productos a mercadopago se abre la interfaz
+mostrandote el titulo del producto y el monto, o si son muchos productos te muestra como titulo "productos" 
+con el monto total, y abajo hay un link que dice "volver al sitio" o algo asi. Al darle clic va a la ruta
+indicada. 
+

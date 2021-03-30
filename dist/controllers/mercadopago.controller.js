@@ -60,7 +60,7 @@ exports.checkout = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             back_urls: {
                 success: "https://bookstore-cds-frontend.herokuapp.com/purchase/successful-purchase",
                 failure: "http://www.tu-sitio/failure",
-                pending: "http://www.tu-sitio/pending",
+                pending: "https://bookstore-cds-frontend.herokuapp.com/purchase/form-purchase",
             },
             auto_return: "approved",
         };
