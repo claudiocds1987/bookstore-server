@@ -16,10 +16,8 @@ imagen con el mismo nombre, no se borren o se pisen al grabarlas */
 const uuid = require("uuid");
 const app = express(); // inicializo express
 const cors = require("cors"); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
-//const path = require("path");
-//const mercadopago = require("mercadopago"); //?
 
-//rutas
+// importacion de las rutas
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import booksRoutes from "./routes/books.routes";
@@ -34,6 +32,7 @@ import salesDetailRoutes from "./routes/salesDetail.routes";
 // stripe para pagos online
 import stripeRoutes from "./routes/stripe.routes";
 import mercadopagoRoutes from "./routes/mercadopago.routes";
+import provinciasRoutes from "./routes/provincias.routes";
 
 // para que acepte peticiones de cualquier puerto ej 4200 de Angular, caso contrario desde Angular va a dar un error de Police cors
 app.use(cors());
@@ -105,6 +104,7 @@ app.use(ordersDetailRoutes);
 app.use(salesRoutes);
 app.use(salesDetailRoutes);
 app.use(mercadopagoRoutes);
+app.use(provinciasRoutes);
 
 // para mostrar la imagen en el navegador escribo ej: http://localhost:4000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
 app.use(express.static("public")); // Carpeta public la hago de acceso publica. para poder ver las imagenes desde el navegador

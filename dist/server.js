@@ -20,9 +20,7 @@ imagen con el mismo nombre, no se borren o se pisen al grabarlas */
 const uuid = require("uuid");
 const app = express_1.default(); // inicializo express
 const cors = require("cors"); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
-//const path = require("path");
-//const mercadopago = require("mercadopago"); //?
-//rutas
+// importacion de las rutas
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const books_routes_1 = __importDefault(require("./routes/books.routes"));
@@ -37,6 +35,7 @@ const salesDetail_routes_1 = __importDefault(require("./routes/salesDetail.route
 // stripe para pagos online
 const stripe_routes_1 = __importDefault(require("./routes/stripe.routes"));
 const mercadopago_routes_1 = __importDefault(require("./routes/mercadopago.routes"));
+const provincias_routes_1 = __importDefault(require("./routes/provincias.routes"));
 // para que acepte peticiones de cualquier puerto ej 4200 de Angular, caso contrario desde Angular va a dar un error de Police cors
 app.use(cors());
 // 1er forma
@@ -102,6 +101,7 @@ app.use(ordersDetail_routes_1.default);
 app.use(sales_routes_1.default);
 app.use(salesDetail_routes_1.default);
 app.use(mercadopago_routes_1.default);
+app.use(provincias_routes_1.default);
 // para mostrar la imagen en el navegador escribo ej: http://localhost:4000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
 app.use(express_1.default.static("public")); // Carpeta public la hago de acceso publica. para poder ver las imagenes desde el navegador
 // Configuro el puerto. Tomo el puerto del sistema operativo o el 3000
