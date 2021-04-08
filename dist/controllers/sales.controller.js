@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAverageAnnualSales = exports.getAnnualSales = exports.getBookTopSales = exports.salesRevenueByYearAndMonth = exports.salesRevenueFromYear = exports.countSalesFromMonth = exports.countSalesFromYear = exports.getSalesByCustomerId = exports.getLastIdSale = exports.createSale = void 0;
+exports.getAverageAnnualSales = exports.getAnnualSales = exports.getProvinciasTopSales = exports.getBookTopSales = exports.salesRevenueByYearAndMonth = exports.salesRevenueFromYear = exports.countSalesFromMonth = exports.countSalesFromYear = exports.getSalesByCustomerId = exports.getLastIdSale = exports.createSale = void 0;
 // pool es la conexion a db tmb se puede llamar db en vez de pool
 // en consola poner npm run dev (para iniciar el servidor?)
 const database_1 = require("../database");
@@ -157,6 +157,23 @@ exports.getBookTopSales = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const g = " limit 10";
     try {
         const response = yield database_1.pool.query(a + b + c + d + e + f + g);
+        return res.status(200).json(response.rows);
+    }
+    catch (e) {
+        console.log(e);
+        return res.status(500).json("Internal server error");
+    }
+});
+// devuelve la recaudacion total de hasta 5 provincias
+exports.getProvinciasTopSales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const a = 'select orders.provincia, sum(orders.total_price) as "recaudacion"';
+    const b = " from orders";
+    const c = " group by (orders.provincia)";
+    const d = " having sum(orders.total_price) >= 5000";
+    const e = " order by recaudacion desc";
+    const f = " limit 5";
+    try {
+        const response = yield database_1.pool.query(a + b + c + d + e + f);
         return res.status(200).json(response.rows);
     }
     catch (e) {

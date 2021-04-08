@@ -306,7 +306,7 @@ exports.altaBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 // NO FUNCIONA
 exports.getTotalBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield database_1.pool.query("select count(id_book) as total from books");
+        const response = yield database_1.pool.query("select count(books.id_book) as total from books");
         return res.status(200).json(response.rows);
     }
     catch (e) {

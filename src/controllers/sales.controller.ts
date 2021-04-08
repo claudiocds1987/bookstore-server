@@ -199,6 +199,29 @@ export const getBookTopSales = async (
   }
 };
 
+
+// devuelve la recaudacion total de hasta 5 provincias
+export const getProvinciasTopSales = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const a =
+    'select orders.provincia, sum(orders.total_price) as "recaudacion"';
+  const b = " from orders";
+  const c = " group by (orders.provincia)";
+  const d = " having sum(orders.total_price) >= 5000";
+  const e = " order by recaudacion desc";
+  const f = " limit 5";
+  
+  try {
+    const response: QueryResult = await pool.query(a + b + c + d + e + f);
+    return res.status(200).json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json("Internal server error");
+  }
+};
+
 // devuelve el monto total de ventas de cada mes de un año particular
 export const getAnnualSales = async (
   req: Request,

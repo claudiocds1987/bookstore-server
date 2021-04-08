@@ -12,6 +12,7 @@ import {
   createSale,
   getLastIdSale,
   getSalesByCustomerId,
+  getProvinciasTopSales,
 } from "../controllers/sales.controller";
 
 router.post("/sales/create", createSale);
@@ -22,6 +23,7 @@ router.get("/sales/revenueByYearAndMonth/:year/:month", salesRevenueByYearAndMon
 router.get("/sales/countFromYear/:year", countSalesFromYear);
 router.get("/sales/revenueFromYear/:year", salesRevenueFromYear);
 router.get("/sales/bookTopSales", getBookTopSales);
+router.get("/sales/provinciasTopSales", getProvinciasTopSales);
 router.get("/sales/annualSales/:year", getAnnualSales);
 router.get("/sales/averageAnnualSales/:year", getAverageAnnualSales);
 

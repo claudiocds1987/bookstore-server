@@ -435,7 +435,7 @@ export const getTotalBooks = async (
 ): Promise<Response> => {
   try {
     const response: QueryResult = await pool.query(
-      "select count(id_book) as total from books"
+      "select count(books.id_book) as total from books"
     );
     return res.status(200).json(response.rows);
   } catch (e) {
