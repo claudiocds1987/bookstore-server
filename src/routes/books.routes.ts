@@ -28,7 +28,8 @@ import {
   getOneBookWithAuthorName,
   getBookByID,
   getRealDataBook,
-  getTotalBooks
+  getTotalBooks,
+  filterAvailableBooks
 } from "../controllers/books.controller";
 
 // ******************* PARA HACER UPLOAD DE IMAGE ******************* //
@@ -97,6 +98,10 @@ router.put("/books/baja/:id", bajaBook); // baja de libro
 router.put("/books/alta/:id", altaBook); // alta de libro
 router.get("/getRealDataBook/:id", getRealDataBook);
 router.get("/books/total", getTotalBooks);
+
+router.post("/books/filterAvailableBooks", filterAvailableBooks);
+
+
 // router.delete('/books/delete/:id', deleteBook); // delete book
 
 export default router;

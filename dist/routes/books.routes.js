@@ -76,5 +76,6 @@ router.put("/books/baja/:id", books_controller_1.bajaBook); // baja de libro
 router.put("/books/alta/:id", books_controller_1.altaBook); // alta de libro
 router.get("/getRealDataBook/:id", books_controller_1.getRealDataBook);
 router.get("/books/total", books_controller_1.getTotalBooks);
+router.post("/books/filterAvailableBooks", books_controller_1.filterAvailableBooks);
 // router.delete('/books/delete/:id', deleteBook); // delete book
 exports.default = router;

@@ -1,0 +1,13 @@
+uando la base de datos esta corriendo en Heroku a c/u de las tablas en postgresql por las dudas habilitar 
+los permisos para poder insertar, editar, actualizar. Ya que como me paso una vez, al principio no pasaba 
+nada pero despues al tiempo al insertar los datos en la tabla books, node/express me decia por consola que 
+habia un error de duplicate unic constraint (a pesar de que los id de la tabla los tenia como SERIAL 
+autoincremental) entonces habilite los permisos y me dejo seguir insertando datos.
+
+desde pgAdmin4 hablitar los permisos:
+
+1) seleccionar la tabla clic derecho -> properties
+2) clic en Security
+3) en privileges clic en el boton "+"
+4) en la columna Grantee poner "public", en la columna "privileges" tildar la opcion "all" y en la columna "grantor" dejar la opcion que esta por defecto.
+5) clic en Save.

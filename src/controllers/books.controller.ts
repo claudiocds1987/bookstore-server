@@ -74,6 +74,77 @@ export const filterAvailableBooksByName = async (
   }
 };
 
+
+
+
+// -------------------------------------------------------------------------------
+
+// trae solo los libros con state = true (aptos para venta)
+export const filterAvailableBooks = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  // if (!req.params.name) {
+  //   return res.status(400).send({
+  //     message:
+  //       "FALTA CONTENIDO EN EL CUERPO, falta el nombre para buscar el libro",
+  //   });
+  // }
+
+  // console.log(req.body);
+  const {column, value } = req.body;
+  console.log(column, value);
+  
+  const a = 'SELECT books.description, books.id_author, books.id_category, books.id_editorial,';
+  const b = ' books.quantity, books.state, books.year, books.id_book, books.name, books.price,';
+  const c = ' books.url_image, authors.name AS Autor';
+  const d = ' FROM books';
+  const e = ' INNER JOIN authors';
+  const f = ' ON books.id_author = authors.id_author';
+  const g = ' INNER JOIN editorials';
+  const h = ' ON books.id_editorial = editorials.id_editorial';
+  const i = ' WHERE books.state = true'
+  
+  let query = a + b + c + d + e + f + g + h + i;
+  let aux = '';
+
+  switch(column){
+    case 'title':
+      aux = ` AND books.name iLIKE '%${value}%'`;
+      query = query + aux;
+      break;
+    case 'author':
+      aux = ` AND authors.name iLIKE '%${value}%'`;
+      query = query + aux;
+      break;
+    case 'editorial':
+      aux = ` AND editorials.name iLIKE '%${value}%'`;
+      query = query + aux;
+      break; 
+    case 'all':
+      query = query;
+      break;
+      default:      
+  }
+  
+  try {
+    const response: QueryResult = await pool.query(
+      query
+    );
+    return res.json(response.rows);
+  } catch (e) {
+    console.log(e);
+    return res
+      .status(500)
+      .json("Error, no se pudo filtrar el libro");
+  }
+};
+
+// -------------------------------------------------------------------------------
+
+
+
+
 // trae todos los libros filtrados por nombre sin importar su state
 export const filterBooksByName = async (
   req: Request,
@@ -254,11 +325,13 @@ export const existBook = async (
   }
 };
 
+
 export const createBook = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   // recibo los datos (de un form, insomnia rest, etc..)
+  console.log(req.body);
   const {
     name,
     year,
