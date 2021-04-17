@@ -16,7 +16,7 @@ const database_1 = require("../database");
 const bcrypt = require('bcrypt'); // para encriptar passwords, se instala con npm install bcrypt.
 exports.getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield database_1.pool.query('SELECT * from users order by username asc');
+        const response = yield database_1.pool.query('SELECT * from users order by registration_date desc');
         return res.status(200).json(response.rows);
     }
     catch (e) {

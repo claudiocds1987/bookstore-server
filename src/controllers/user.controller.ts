@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt'); // para encriptar passwords, se instala con np
 
 export const getUsers = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const response: QueryResult = await pool.query('SELECT * from users order by username asc');
+        const response: QueryResult = await pool.query('SELECT * from users order by registration_date desc');
         return res.status(200).json(response.rows);
     }
     catch (e) {
