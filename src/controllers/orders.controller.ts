@@ -49,7 +49,7 @@ export const getOrdersByUserId = async (req: Request, res: Response): Promise<Re
   
   try {
     const id = parseInt(req.params.id_user);
-    const response: QueryResult = await pool.query('SELECT * FROM orders WHERE orders.id_user = $1', [id]);
+    const response: QueryResult = await pool.query('SELECT * FROM orders WHERE orders.id_user = $1 order by order_date desc', [id]);
     return res.status(200).json(response.rows);
   }
   catch (e) {
