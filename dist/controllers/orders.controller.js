@@ -52,7 +52,7 @@ exports.getOrdersByUserId = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
     try {
         const id = parseInt(req.params.id_user);
-        const response = yield database_1.pool.query('SELECT * FROM orders WHERE orders.id_user = $1', [id]);
+        const response = yield database_1.pool.query('SELECT * FROM orders WHERE orders.id_user = $1 order by order_date desc', [id]);
         return res.status(200).json(response.rows);
     }
     catch (e) {
