@@ -74,24 +74,12 @@ export const filterAvailableBooksByName = async (
   }
 };
 
-
-
-
-// -------------------------------------------------------------------------------
-
 // trae solo los libros con state = true (aptos para venta)
 export const filterAvailableBooks = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // if (!req.params.name) {
-  //   return res.status(400).send({
-  //     message:
-  //       "FALTA CONTENIDO EN EL CUERPO, falta el nombre para buscar el libro",
-  //   });
-  // }
-
-  // console.log(req.body);
+  
   const {column, value } = req.body;
   console.log(column, value);
   
@@ -139,11 +127,6 @@ export const filterAvailableBooks = async (
       .json("Error, no se pudo filtrar el libro");
   }
 };
-
-// -------------------------------------------------------------------------------
-
-
-
 
 // trae todos los libros filtrados por nombre sin importar su state
 export const filterBooksByName = async (
@@ -311,7 +294,7 @@ export const existBook = async (
       [idAut]
     );
     if (res.json(response.rowCount > 0)) {
-      // si existe el nombre del libro e id de autor, en Angular devuelve true
+      // si existe devuelve true
       return res.status(200);
     } else {
       // devuelve false
@@ -330,7 +313,7 @@ export const createBook = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // recibo los datos (de un form, insomnia rest, etc..)
+
   console.log(req.body);
   const {
     name,
@@ -363,10 +346,7 @@ export const createBook = async (
   let id_edi = parseInt(id_editorial);
   let cantidad = parseInt(quantity);
   let precio = parseInt(price);
-  // let url_img = (req as any).file.path; //?
-  // console.log('url imagen en server: ' + url_img)
-  // let idBook = parseInt(id_book);
-  // insert en PostgreSQL
+  
   const response: QueryResult = await pool.query(
     "INSERT INTO books (name, year, id_author, id_category, id_editorial, description, quantity, price, url_image, state) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
     [
@@ -382,7 +362,7 @@ export const createBook = async (
       state,
     ]
   );
-  // const response: QueryResult = await pool.query('INSERT INTO books (name, year, id_author, id_category, id_editorial, description, quantity, price, url_image, state) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [name, book_year, id_aut, id_cat, id_edi, description, cantidad, precio, url_img, state]); // ?
+  
   return res.json({
     message: "El libro ah sido creado exitosamente!",
     body: {
@@ -397,7 +377,7 @@ export const updateBook = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // recibo los datos (de un form, insomnia rest, etc..)
+
   const {
     name,
     year,
@@ -417,7 +397,6 @@ export const updateBook = async (
   let id_cat = parseInt(id_category);
   let id_edit = parseInt(id_editorial);
   let cantidad = parseInt(quantity);
-  // let precio = parseInt(price);
   let precio = price;
 
   console.log(
@@ -433,7 +412,6 @@ export const updateBook = async (
     state
   );
 
-  // consulta a PostgreSQL
   await pool.query(
     "UPDATE books set name = $1, year = $2, id_author = $3, id_category = $4, id_editorial = $5, description = $6, quantity = $7, price = $8, url_image = $9, state = $10 WHERE id_book = $11",
     [
@@ -471,7 +449,6 @@ export const bajaBook = async (req: Request, res: Response): Promise<Response> =
    const idBook = parseInt(req.params.id);
     await pool.query('UPDATE public.books SET state = false WHERE id_book = $1', [idBook]);
     return res.status(200).json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);  
-    //return res.json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);  
   } catch (e) {
     console.log(e);
     return res
@@ -490,8 +467,7 @@ export const altaBook = async (req: Request, res: Response): Promise<Response> =
    try {
    const idBook = parseInt(req.params.id);
     await pool.query('UPDATE public.books SET state = true WHERE id_book = $1', [idBook]);
-    return res.status(200).json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);  
-    //return res.json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);  
+    return res.status(200).json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);   
   } catch (e) {
     console.log(e);
     return res
@@ -517,9 +493,3 @@ export const getTotalBooks = async (
   }
 };
 
-// export const deleteBook = async (req: Request, res: Response): Promise<Response> => {
-//    // console.log(req.params.username);
-//    // consulta a PostgreSQL
-//    await pool.query('DELETE FROM books WHERE id_book = $1', [req.params.id]);
-//    return res.json(`El libro con id ${req.params.id} ah sido eliminado exitosamente!`);
-// }

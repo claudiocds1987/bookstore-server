@@ -3,15 +3,13 @@ const router = Router();
 import express from "express";
 // usando el middleware multer para subir archivos (desde consola npm install --save multer)
 var multer = require("multer");
-/* usando uuid, (desde consola npm i uuid) es un generador de id para que en el caso de que dos usuarios suban una
+/* npm i uuid (generador de id para que en el caso de que dos usuarios suban una
 imagen con el mismo nombre, no se borren o se pisen al grabarlas */
 const uuid = require("uuid");
 const app = express();
-const cors = require("cors"); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
-
+const cors = require("cors");
 const path = require("path");
 
-// router.get('/test', (req, res) => res.send('hello world'))
 import {
   bajaBook,
   altaBook,
@@ -51,14 +49,13 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   dest: "uploads/",
-  //dest: 'public/uploads', // ?
-  //dest: path.join(__dirname, 'public/uploads'),
+
   limits: { fileSize: 2000000 }, //max permitido de image, 2 mega byte de peso
   fileFilter: (req, file, cb) => {
     const fileTypes = /jpeg|jpg|png|gif/; // expresion regular
     // mimetype checkea si el archivo es valido ej img/extension del archivo
     const mimetype = fileTypes.test(file.mimetype);
-    // con path.extname checkea si la img tiene la extension .jpeg o .jpg o .gif o .png
+    // path.extname checkea si la img tiene la extension .jpeg o .jpg o .gif o .png
     const extname = fileTypes.test(path.extname(file.originalname));
     if (mimetype && extname) {
       return cb(null, true);
@@ -75,33 +72,30 @@ router.route("/file").post(upload, (req, res, next) => {
     console.log("No se subió ninguna imagen");
   }
   res.send(file);
-  // para mostrar la ruta por console log
   var ruta = (req as any).file.path;
   console.log("ruta de imagen: " + ruta);
 });
 
 // ******************* FIN UPLOAD DE IMAGE ******************* //
 
-router.get("/books/exist/:name/:id_author", existBook); // check si existe nombre de libro e id autor
-router.get("/books/:id", getBookByID); // get de libro
-router.get("/booksAuthorName", getBooksWithAuthorName); // get todos los libros con nombre de autor
-router.get("/AvailableBooksWithAuthorName", getAvailableBooksWithAuthorName); // get libros con state = true
-router.get("/books", getBooks); // get todos los libros pero con idAuthor
-router.get("/bookAuthorName/:id", getOneBookWithAuthorName); // get de un libro con el nombre de autor
+router.get("/books/exist/:name/:id_author", existBook);
+router.get("/books/:id", getBookByID);
+router.get("/booksAuthorName", getBooksWithAuthorName);
+router.get("/AvailableBooksWithAuthorName", getAvailableBooksWithAuthorName);
+router.get("/books", getBooks);
+router.get("/bookAuthorName/:id", getOneBookWithAuthorName);
 router.get("/filterBooksByName/:name", filterBooksByName);
-router.get("/filterAvailableBooksByName/:name", filterAvailableBooksByName); // get libros con state = true
+router.get("/filterAvailableBooksByName/:name", filterAvailableBooksByName);
 router.get("/filterBooksByAuthor/:name", filterBooksByAuthor);
-router.get("/filterAvailableBooksByAuthor/:name", filterAvailableBooksByAuthor); // get libros con state = true
-router.post("/books", upload, createBook); // crear libro
-router.put("/books/:id", upload, updateBook); // actualizar libro
-router.put("/books/baja/:id", bajaBook); // baja de libro
-router.put("/books/alta/:id", altaBook); // alta de libro
+// get libros con state = true
+router.get("/filterAvailableBooksByAuthor/:name", filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", getRealDataBook);
 router.get("/books/total", getTotalBooks);
-
+router.post("/books", upload, createBook);
 router.post("/books/filterAvailableBooks", filterAvailableBooks);
+router.put("/books/:id", upload, updateBook);
+router.put("/books/baja/:id", bajaBook);
+router.put("/books/alta/:id", altaBook);
 
-
-// router.delete('/books/delete/:id', deleteBook); // delete book
 
 export default router;
