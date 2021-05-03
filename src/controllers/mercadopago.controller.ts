@@ -3,7 +3,6 @@ const mercadopago = require("mercadopago");
 const bodyParser = require("body-parser");
 
 import { Compramp } from "../compramp";
-
 import { Request, Response } from "express";
 
 mercadopago.configure({
@@ -16,7 +15,7 @@ export const checkout = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // obtniendo total de productos a comprar
+  // obteniendo total de productos a comprar
   const totalProducts = parseInt(req.body.totalProducts);
   //  Creo un objeto "productos", cada atributo va a guardar la info de los body title, price y quantity.
   const productos = {
@@ -81,79 +80,3 @@ export const checkout = async (
     return res.status(500).json("Internal server error");
   }
 };
-
-// ---------------------------------------------------------------------------------------------
-// PRUEBA SI DESDE ANGULAR UTILIZO EL SERVICIO mercadopago.service.ts
-
-// export const prueba = async (
-//   req: Request,
-//   res: Response,
-//   next
-// ): Promise<Response> => {
-//   if (!req.body) {
-//     res.status(400).send("FALTA CONTENIDO EN EL CUERPO");
-//     return;
-//   }
-//   // Website you wish to allow to connect probar poner '*' en lugar de http://localhost:3000/ckeckout
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   // Request methods you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-//   );
-//   // Request headers you wish to allow
-//   res.setHeader(
-//     "Access-Control-Allow-Headers",
-//     "X-Requested-With,content-type"
-//   );
-//   // para error de CORS policy
-//   // res.header('Access-Control-Allow-Origin', '*');
-//   // res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-//   // res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-//   // res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-//   //next(); // este sacalo te sale error de headers
-
-//   let compra = [
-//     {
-//       title: "",
-//       unit_price: 0,
-//       quantity: 0,
-//     },
-//   ];
-
-//   let items: Compramp[] = [];
-
-//   compra = req.body;
-  
-//   for (let data of compra) {
-//     items.push({
-//       title: data.title,
-//       unit_price: parseInt(data.unit_price.toString()),
-//       quantity: parseInt(data.quantity.toString()),
-//     });
-//   }
-
-//   for (let p of items) {
-//     console.log(p);
-//   }
-
-//   try {
-//     let preference = {
-//       items,
-//     };
-
-//     mercadopago.preferences
-//       .create(preference)
-//       .then(function (response) {
-//         console.log(response.body);
-//         // redirije a pagina de mercadopago 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=523979565-11685645-d45d-4755-b818-ec91acb30ac3'
-//         res.redirect(response.body.init_point);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//   } catch (e) {
-//     console.log(e);
-//     return res.status(500).json("Internal server error");
-//   }
-// };
