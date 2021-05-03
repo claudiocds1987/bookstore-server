@@ -38,56 +38,10 @@ const mercadopago_routes_1 = __importDefault(require("./routes/mercadopago.route
 const provincias_routes_1 = __importDefault(require("./routes/provincias.routes"));
 // para que acepte peticiones de cualquier puerto ej 4200 de Angular, caso contrario desde Angular va a dar un error de Police cors
 app.use(cors());
-// 1er forma
-// app.use(
-//   cors({
-//       origin: function (origin, callback) {
-//           if (!origin) return callback(null, true);
-//           // Dirección desde donde se pueden hacer peticiones
-//           if (!["http://localhost:3000","http://localhost:4200","http://localhost:3000/checkout"].includes(origin)) {
-//               return callback(new Error(`La política CORS para el origen ${origin} no permiten el acceso al servidor.`), false);
-//           }
-//           return callback(null, true);
-//       }
-//   })
-// )
-// 2da forma
-//-----------------------------FUNCIONA MAL-----------------------------------------------------------------------
-// app.use(
-//   cors({
-//       origin: function (origin, callback) {
-//           if (!origin) return callback(null, true);
-//           // Dirección desde donde se pueden hacer peticiones
-//           // probar poner localhost:4200 o http://localhost:3000/checkout??
-//           if (origin !== "http://localhost:3000") {
-//             return callback(new Error("La política CORS para este origen no permite el acceso desde el origen en particular."), false);
-//           }
-//           return callback(null, true);
-//       }
-//   })
-// )
-//----------------------------------------------------------------------------------------------------
 // middlewares son funciones que procesan y transforman las peticiones entrantes en el servidor
 app.use(express_1.default.json());
 // para que al enviar datos de un formulario los convierta a objeto json
 app.use(express_1.default.urlencoded({ extended: false }));
-//**************NO FUNCIONA NO ABRE MERCADO PAGO***************************************** */
-// const config = {
-//   application: {
-//     cors: {
-//       server: [
-//         {
-//           //localhost:3000
-//           origin: "http://localhost:3000", //servidor que deseas que consuma o (*) en caso que sea acceso libre
-//           credentials: true,
-//         },
-//       ],
-//     },
-//   },
-// };
-// app.use(cors(config.application.cors.server));
-//********************************************************** */
-// app.use('/api/auth/', authRoutes);
 app.use(auth_routes_1.default);
 app.use(user_routes_1.default);
 app.use(books_routes_1.default);
@@ -113,37 +67,3 @@ app.listen(app.get("port"), () => {
 app.get("/", (req, res) => {
     res.send("Welcome to my API");
 });
-// ------------------------------------------------------------------------------------
-// app.get("/checkout", (req, res) => {
-//   res.send("checkout mercado pago");
-// });
-//***************************************************************************** */
-//***************************************************************************** */
-// mercadopago.configure({
-//   // el token es el de "produccion" que te da mercadopago, seria el token del vendedor el que recibe la plata.
-//   access_token:
-//     "APP_USR-6727410487429690-020719-843ab473f4a5a89f1c2d74b496b704cd-523979565",
-// });
-// app.post("/checkout", (req, res) => {
-//   //res.send('checkout mercado pago');
-//   // Crea un objeto de preferencia
-//   let preference = {
-//     items: [
-//       {
-//         title: "Mi producto",
-//         unit_price: 100,
-//         quantity: 1,
-//       },
-//     ],
-//   };
-//   mercadopago.preferences
-//     .create(preference)
-//     .then(function (response) {
-//       console.log(response.body);
-//       // res.send('CHECKOUT');
-//       res.redirect(response.body.init_point);
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// });
