@@ -53,7 +53,8 @@ export const getLastIdSale = async (
     const response: QueryResult = await pool.query(
       'select max(id_sale) as "lastIdSale" from sales'
     );
-    return res.status(200).json(response.rows[0]); // rows[0] porque va a devolver un solo valor
+    // rows[0] para devolver un solo valor
+    return res.status(200).json(response.rows[0]);
   } catch (e) {
     console.log(e);
     return res.status(500).json("Internal server error");

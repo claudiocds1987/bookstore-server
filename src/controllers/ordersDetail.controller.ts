@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import { QueryResult } from "pg";
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run dev (para iniciar el servidor?)
 import { pool } from "../database";
 
 export const createOrderDetail = async (
@@ -19,7 +17,7 @@ export const createOrderDetail = async (
   ) {
     res.status(400).send("FALTA CONTENIDO EN EL CUERPO");
   }
-  // recibo los datos (de un form, insomnia rest, etc..)
+
   const { id_order, id_product, product_price, product_quantity } = req.body;
   console.log(id_order, id_product, product_price, product_quantity);
 

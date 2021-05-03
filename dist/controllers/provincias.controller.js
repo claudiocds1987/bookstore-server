@@ -10,23 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProvincias = exports.createProvincia = void 0;
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run dev (para iniciar el servidor?)
 const database_1 = require("../database");
 exports.createProvincia = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // check empty name
     if (!req.body.name) {
         return res.status(400).send({
             message: "FALTA CONTENIDO EN EL CUERPO PARA PODER AGREGAR LA PROVINCIA",
         });
     }
-    // guardo en const name lo que llega en el request
     const { name } = req.body;
     if (name.length > 50)
         return res.status(400).send({
             message: "NO PUEDE TENER UN NOMBRE DE PROVINCIA CON MAS DE 50 CARACTERES",
         });
-    // insert en PostgreSQL
     const response = yield database_1.pool.query("INSERT INTO provincias (name) VALUES ($1)", [name]);
     return res.json({
         message: "La provincia ah sido creada exitosamente!",

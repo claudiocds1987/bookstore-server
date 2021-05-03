@@ -10,8 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOrderDetail = exports.createOrderDetail = void 0;
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run dev (para iniciar el servidor?)
 const database_1 = require("../database");
 exports.createOrderDetail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // En mi ordersDetail.routes.ts, la ruta router.post('router.post('/ordersDetail/create', no recibe ningun parametro por url, sino que recibe todos los datos por el body, por esta razon se evalua como !req.body.id_order etc..
@@ -23,7 +21,6 @@ exports.createOrderDetail = (req, res) => __awaiter(void 0, void 0, void 0, func
         !req.body.product_quantity) {
         res.status(400).send("FALTA CONTENIDO EN EL CUERPO");
     }
-    // recibo los datos (de un form, insomnia rest, etc..)
     const { id_order, id_product, product_price, product_quantity } = req.body;
     console.log(id_order, id_product, product_price, product_quantity);
     let idOrder = parseInt(id_order);
