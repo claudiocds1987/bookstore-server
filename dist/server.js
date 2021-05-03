@@ -3,22 +3,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// ESTE ARCHIVO SERVER.TS ES EL QUE INICIA EL SERVIDOR NODEJS
-//--------------------------------------------------------------------------------------
-// esto es para utilizar variables de entorno para el token creado en auth.controller
-// 1) instale npm i dotenv (para usar variables de entorno para el token)
-// 2) instale npm i @types/dotenv -D para sus metodos
-// 3) cree el archivo .env ahi adentro esta la variable de entorno TOKEN_SECRET
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config(); // aca lee las variables de entorno para el token
-//-----------------------------------
+// para variables de entorno
+dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
-// usando el middleware multer para subir archivos (desde consola npm install --save multer)
+//npm install --save multer (middleware para subir archivos)
 var multer = require("multer");
-/* usando uuid, (desde consola npm i uuid) es un generador de id para que en el caso de que dos usuarios suban una
-imagen con el mismo nombre, no se borren o se pisen al grabarlas */
+// npm i uuid (generador de id)
 const uuid = require("uuid");
-const app = express_1.default(); // inicializo express
+const app = express_1.default();
 const cors = require("cors"); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
 // importacion de las rutas
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
@@ -36,11 +29,9 @@ const salesDetail_routes_1 = __importDefault(require("./routes/salesDetail.route
 const stripe_routes_1 = __importDefault(require("./routes/stripe.routes"));
 const mercadopago_routes_1 = __importDefault(require("./routes/mercadopago.routes"));
 const provincias_routes_1 = __importDefault(require("./routes/provincias.routes"));
-// para que acepte peticiones de cualquier puerto ej 4200 de Angular, caso contrario desde Angular va a dar un error de Police cors
+// middlewares
 app.use(cors());
-// middlewares son funciones que procesan y transforman las peticiones entrantes en el servidor
 app.use(express_1.default.json());
-// para que al enviar datos de un formulario los convierta a objeto json
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(auth_routes_1.default);
 app.use(user_routes_1.default);
@@ -56,9 +47,9 @@ app.use(sales_routes_1.default);
 app.use(salesDetail_routes_1.default);
 app.use(mercadopago_routes_1.default);
 app.use(provincias_routes_1.default);
-// para mostrar la imagen en el navegador escribo ej: http://localhost:4000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
-app.use(express_1.default.static("public")); // Carpeta public la hago de acceso publica. para poder ver las imagenes desde el navegador
-// Configuro el puerto. Tomo el puerto del sistema operativo o el 3000
+// para mostrar imagen en el navegador http://localhost:4000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
+app.use(express_1.default.static("public"));
+// Tomo el puerto del sistema operativo o el 3000
 app.set("port", process.env.PORT || 3000);
 // Inicio el servidor
 app.listen(app.get("port"), () => {
