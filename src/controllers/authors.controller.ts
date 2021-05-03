@@ -1,28 +1,25 @@
 import { Request, Response } from "express";
 import { QueryResult } from "pg";
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run build (para compilar)
-// en consola poner npm run dev (para iniciar el servidor)
 import { pool } from "../database";
 
 export const createAuthor = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // check empty name
+
   if (!req.body.name) {
     return res.status(400).send({
       message: "FALTA CONTENIDO EN EL CUERPO PARA PODER AGREGAR UN AUTOR",
     });
   }
-  // guardo en const name lo que llega en el request
+
   const { name } = req.body;
 
   if (name.length > 50)
     return res.status(400).send({
       message: "NO PUEDE TENER UN NOMBRE DE AUTOR CON MAS DE 50 CARACTERES",
     });
-  // insert en PostgreSQL
+
   const response: QueryResult = await pool.query(
     "INSERT INTO authors (name) VALUES ($1)",
     [name]
@@ -41,14 +38,13 @@ export const updateAuthor = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  // check empty name
+
   if (!req.body.name || !req.body.id_author) {
     return res.status(400).send({
       message: "FALTA CONTENIDO EN EL CUERPO PARA ACTUALIZAR EL AUTOR",
     });
   }
 
-  // recibo los datos (de un form, insomnia rest, etc..)
   const { name, id_author } = req.body;
 
   if (name.length > 50)
@@ -60,7 +56,6 @@ export const updateAuthor = async (
 
   console.log("data recibida: " + id_aut, name);
 
-  // consulta a PostgreSQL
   await pool.query("UPDATE authors set name = $1 WHERE id_author = $2", [
     name,
     id_aut,
@@ -130,7 +125,6 @@ export const getAuthorById = async (
     return res.status(500).send({
       message: "Ha ocurrido un error al intentar obtener el autor por id",
     });
-    // return res.status(500).json('Internal server error');
   }
 };
 
@@ -179,7 +173,7 @@ export const existAuthorByName = async (
     );
     // si hay coincidencia
     if (res.json(response.rowCount > 0)) {
-      // en Angular obtengo true
+      // devuelve true
       return res.status(200);
     } else {
       // devuelve false

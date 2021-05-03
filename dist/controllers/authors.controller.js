@@ -10,24 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.existAuthorByName = exports.filterAuthorsByName = exports.getAuthorById = exports.getAuthorByName = exports.getAuthors = exports.updateAuthor = exports.createAuthor = void 0;
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run build (para compilar)
-// en consola poner npm run dev (para iniciar el servidor)
 const database_1 = require("../database");
 exports.createAuthor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // check empty name
     if (!req.body.name) {
         return res.status(400).send({
             message: "FALTA CONTENIDO EN EL CUERPO PARA PODER AGREGAR UN AUTOR",
         });
     }
-    // guardo en const name lo que llega en el request
     const { name } = req.body;
     if (name.length > 50)
         return res.status(400).send({
             message: "NO PUEDE TENER UN NOMBRE DE AUTOR CON MAS DE 50 CARACTERES",
         });
-    // insert en PostgreSQL
     const response = yield database_1.pool.query("INSERT INTO authors (name) VALUES ($1)", [name]);
     return res.json({
         message: "El author ah sido creado exitosamente!",
@@ -39,13 +33,11 @@ exports.createAuthor = (req, res) => __awaiter(void 0, void 0, void 0, function*
     });
 });
 exports.updateAuthor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // check empty name
     if (!req.body.name || !req.body.id_author) {
         return res.status(400).send({
             message: "FALTA CONTENIDO EN EL CUERPO PARA ACTUALIZAR EL AUTOR",
         });
     }
-    // recibo los datos (de un form, insomnia rest, etc..)
     const { name, id_author } = req.body;
     if (name.length > 50)
         return res.status(400).send({
@@ -53,7 +45,6 @@ exports.updateAuthor = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     let id_aut = parseInt(id_author);
     console.log("data recibida: " + id_aut, name);
-    // consulta a PostgreSQL
     yield database_1.pool.query("UPDATE authors set name = $1 WHERE id_author = $2", [
         name,
         id_aut,
@@ -104,7 +95,6 @@ exports.getAuthorById = (req, res) => __awaiter(void 0, void 0, void 0, function
         return res.status(500).send({
             message: "Ha ocurrido un error al intentar obtener el autor por id",
         });
-        // return res.status(500).json('Internal server error');
     }
 });
 exports.filterAuthorsByName = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -135,7 +125,7 @@ exports.existAuthorByName = (req, res) => __awaiter(void 0, void 0, void 0, func
         const response = yield database_1.pool.query(`SELECT * FROM authors WHERE name iLIKE '${req.params.name}'`);
         // si hay coincidencia
         if (res.json(response.rowCount > 0)) {
-            // en Angular obtengo true
+            // devuelve true
             return res.status(200);
         }
         else {

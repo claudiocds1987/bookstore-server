@@ -13,16 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signin = exports.signup = void 0;
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run dev (para iniciar el servidor)
 const database_1 = require("../database");
-const bcrypt = require("bcrypt"); // para encriptar passwords, se instala con npm install bcrypt.
+// npm install bcrypt
+const bcrypt = require("bcrypt");
 // instale npm i jsonwebtoken y tambien npm i @types/jsonwebtoken -D (para que reconosca los metodos)
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 //--------------------------------------------------------------------------------------------
 // PARA EL TOKEN fijarse en el archivo server.ts los modulos que instale y el archivo .env
 //--------------------------------------------------------------------------------------------
-// metodo para registrar usuario
+// crear usuario
 exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.pass ||
         !req.body.registration_date ||
@@ -31,7 +30,6 @@ exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(400).send("FALTA CONTENIDO EN EL CUERPO");
         return;
     }
-    //guardo en constantes los datos recibidos de un form, insomnia rest, etc..
     const { pass, registration_date, email, username } = req.body;
     console.log("Datos recibidos: " + pass, registration_date, email, username);
     // el id_user es autonumerico en la db lo crea automaticamente
@@ -47,9 +45,7 @@ exports.signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("El id de usuario insertado recientemente es: " + idUser);
     })
         .catch((error) => {
-        res
-            .status(400)
-            .send({
+        res.status(400).send({
             message: "Error no se pudo insertar al usuario en la base de datos " + error,
         });
     });
@@ -60,9 +56,6 @@ exports.signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(400).send("FALTA CONTENIDO EN EL CUERPO");
         return;
     }
-    // recibo los datos (de un form, insomnia rest, etc..)
-    // const { username, password, } = (req.body);
-    // console.log('Data recibida: ' + username, password);
     yield database_1.pool
         .query(`SELECT * FROM users WHERE username = '${req.body.username}'`)
         .then((data) => {
@@ -70,17 +63,15 @@ exports.signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const password = data.rows[0].pass;
         // obtengo el id_user que devolvio la query
         const idUser = data.rows[0].id_user;
-        // console.log('password del usuario: ' + password);
-        // console.log('ID usuario: ' + idUser);
         // comparo las contraseñas
         const resultPassword = bcrypt.compareSync(req.body.password, password);
         if (resultPassword) {
-            //genero el token
+            // genero el token
             const token = jsonwebtoken_1.default.sign({ _id: idUser }, process.env.TOKEN_SECRET || "tokentest", {
                 // duracion del token
                 expiresIn: 60 * 60 * 24,
             });
-            // crea un objeto dataUser
+            // creando un objeto dataUser
             const dataUser = {
                 id: data.rows[0].id_user,
                 username: data.rows[0].username,
@@ -93,7 +84,6 @@ exports.signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         else {
             console.log("las contraseñas no son iguales");
-            // la contraseña es incorrecta
             return res
                 .status(400)
                 .send({ message: "La contraseña es incorrecta!" });
@@ -105,7 +95,3 @@ exports.signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .send({ message: "Error el nombre de usuario no es valido! " + error });
     });
 });
-// metodo para devolver los datos del usuario
-// export const profile = (req: Request, res: Response) => {
-//     res.send('profile');
-// };

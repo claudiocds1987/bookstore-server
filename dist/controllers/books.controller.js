@@ -67,31 +67,31 @@ exports.filterAvailableBooksByName = (req, res) => __awaiter(void 0, void 0, voi
 exports.filterAvailableBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { column, value } = req.body;
     console.log(column, value);
-    const a = 'SELECT books.description, books.id_author, books.id_category, books.id_editorial,';
-    const b = ' books.quantity, books.state, books.year, books.id_book, books.name, books.price,';
-    const c = ' books.url_image, authors.name AS Autor';
-    const d = ' FROM books';
-    const e = ' INNER JOIN authors';
-    const f = ' ON books.id_author = authors.id_author';
-    const g = ' INNER JOIN editorials';
-    const h = ' ON books.id_editorial = editorials.id_editorial';
-    const i = ' WHERE books.state = true';
+    const a = "SELECT books.description, books.id_author, books.id_category, books.id_editorial,";
+    const b = " books.quantity, books.state, books.year, books.id_book, books.name, books.price,";
+    const c = " books.url_image, authors.name AS Autor";
+    const d = " FROM books";
+    const e = " INNER JOIN authors";
+    const f = " ON books.id_author = authors.id_author";
+    const g = " INNER JOIN editorials";
+    const h = " ON books.id_editorial = editorials.id_editorial";
+    const i = " WHERE books.state = true";
     let query = a + b + c + d + e + f + g + h + i;
-    let aux = '';
+    let aux = "";
     switch (column) {
-        case 'title':
+        case "title":
             aux = ` AND books.name iLIKE '%${value}%'`;
             query = query + aux;
             break;
-        case 'author':
+        case "author":
             aux = ` AND authors.name iLIKE '%${value}%'`;
             query = query + aux;
             break;
-        case 'editorial':
+        case "editorial":
             aux = ` AND editorials.name iLIKE '%${value}%'`;
             query = query + aux;
             break;
-        case 'all':
+        case "all":
             query = query;
             break;
         default:
@@ -102,9 +102,7 @@ exports.filterAvailableBooks = (req, res) => __awaiter(void 0, void 0, void 0, f
     }
     catch (e) {
         console.log(e);
-        return res
-            .status(500)
-            .json("Error, no se pudo filtrar el libro");
+        return res.status(500).json("Error, no se pudo filtrar el libro");
     }
 });
 // trae todos los libros filtrados por nombre sin importar su state
@@ -309,14 +307,14 @@ exports.bajaBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     try {
         const idBook = parseInt(req.params.id);
-        yield database_1.pool.query('UPDATE public.books SET state = false WHERE id_book = $1', [idBook]);
-        return res.status(200).json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);
+        yield database_1.pool.query("UPDATE public.books SET state = false WHERE id_book = $1", [idBook]);
+        return res
+            .status(200)
+            .json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);
     }
     catch (e) {
         console.log(e);
-        return res
-            .status(500)
-            .json("error al intentar dar de baja el libro");
+        return res.status(500).json("error al intentar dar de baja el libro");
     }
 });
 exports.altaBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -327,14 +325,14 @@ exports.altaBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     try {
         const idBook = parseInt(req.params.id);
-        yield database_1.pool.query('UPDATE public.books SET state = true WHERE id_book = $1', [idBook]);
-        return res.status(200).json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);
+        yield database_1.pool.query("UPDATE public.books SET state = true WHERE id_book = $1", [idBook]);
+        return res
+            .status(200)
+            .json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);
     }
     catch (e) {
         console.log(e);
-        return res
-            .status(500)
-            .json("error al intentar dar de alta el libro");
+        return res.status(500).json("error al intentar dar de alta el libro");
     }
 });
 // NO FUNCIONA

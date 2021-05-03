@@ -10,10 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAdmins = exports.login = void 0;
-// pool es la conexion a db tmb se puede llamar db en vez de pool
-// en consola poner npm run dev (para iniciar el servidor?)
 const database_1 = require("../database");
-const bcrypt = require("bcrypt"); // para encriptar passwords, se instala con npm install bcrypt.
+// const bcrypt = require("bcrypt");
 exports.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.body.email || !req.body.pass || !req.body.state) {
         return res.status(400).send({
@@ -21,7 +19,6 @@ exports.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     try {
-        // recibo los datos (de un form, insomnia rest, etc..)
         const { email, pass, state } = req.body;
         console.log(email, pass, state);
         const query = "SELECT * FROM admins WHERE email = $1 AND pass = $2 AND admins.state = $3";

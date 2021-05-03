@@ -79,52 +79,49 @@ export const filterAvailableBooks = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  
-  const {column, value } = req.body;
+  const { column, value } = req.body;
   console.log(column, value);
-  
-  const a = 'SELECT books.description, books.id_author, books.id_category, books.id_editorial,';
-  const b = ' books.quantity, books.state, books.year, books.id_book, books.name, books.price,';
-  const c = ' books.url_image, authors.name AS Autor';
-  const d = ' FROM books';
-  const e = ' INNER JOIN authors';
-  const f = ' ON books.id_author = authors.id_author';
-  const g = ' INNER JOIN editorials';
-  const h = ' ON books.id_editorial = editorials.id_editorial';
-  const i = ' WHERE books.state = true'
-  
-  let query = a + b + c + d + e + f + g + h + i;
-  let aux = '';
 
-  switch(column){
-    case 'title':
+  const a =
+    "SELECT books.description, books.id_author, books.id_category, books.id_editorial,";
+  const b =
+    " books.quantity, books.state, books.year, books.id_book, books.name, books.price,";
+  const c = " books.url_image, authors.name AS Autor";
+  const d = " FROM books";
+  const e = " INNER JOIN authors";
+  const f = " ON books.id_author = authors.id_author";
+  const g = " INNER JOIN editorials";
+  const h = " ON books.id_editorial = editorials.id_editorial";
+  const i = " WHERE books.state = true";
+
+  let query = a + b + c + d + e + f + g + h + i;
+  let aux = "";
+
+  switch (column) {
+    case "title":
       aux = ` AND books.name iLIKE '%${value}%'`;
       query = query + aux;
       break;
-    case 'author':
+    case "author":
       aux = ` AND authors.name iLIKE '%${value}%'`;
       query = query + aux;
       break;
-    case 'editorial':
+    case "editorial":
       aux = ` AND editorials.name iLIKE '%${value}%'`;
       query = query + aux;
-      break; 
-    case 'all':
+      break;
+    case "all":
       query = query;
       break;
-      default:      
+    default:
   }
-  
+
   try {
-    const response: QueryResult = await pool.query(
-      query
-    );
+    const response: QueryResult = await pool.query(query);
     return res.json(response.rows);
   } catch (e) {
     console.log(e);
-    return res
-      .status(500)
-      .json("Error, no se pudo filtrar el libro");
+    return res.status(500).json("Error, no se pudo filtrar el libro");
   }
 };
 
@@ -308,12 +305,10 @@ export const existBook = async (
   }
 };
 
-
 export const createBook = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-
   console.log(req.body);
   const {
     name,
@@ -346,7 +341,7 @@ export const createBook = async (
   let id_edi = parseInt(id_editorial);
   let cantidad = parseInt(quantity);
   let precio = parseInt(price);
-  
+
   const response: QueryResult = await pool.query(
     "INSERT INTO books (name, year, id_author, id_category, id_editorial, description, quantity, price, url_image, state) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
     [
@@ -362,7 +357,7 @@ export const createBook = async (
       state,
     ]
   );
-  
+
   return res.json({
     message: "El libro ah sido creado exitosamente!",
     body: {
@@ -377,7 +372,6 @@ export const updateBook = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-
   const {
     name,
     year,
@@ -438,44 +432,53 @@ export const updateBook = async (
   });
 };
 
-export const bajaBook = async (req: Request, res: Response): Promise<Response> => {
+export const bajaBook = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   if (!req.params.id) {
     return res.status(400).send({
-      message:
-        "FALTA CONTENIDO EN EL CUERPO, falta el id de book",
+      message: "FALTA CONTENIDO EN EL CUERPO, falta el id de book",
     });
   }
-   try {
-   const idBook = parseInt(req.params.id);
-    await pool.query('UPDATE public.books SET state = false WHERE id_book = $1', [idBook]);
-    return res.status(200).json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);  
+  try {
+    const idBook = parseInt(req.params.id);
+    await pool.query(
+      "UPDATE public.books SET state = false WHERE id_book = $1",
+      [idBook]
+    );
+    return res
+      .status(200)
+      .json(`El libro con id ${req.params.id} fue dado de baja exitosamente!`);
   } catch (e) {
     console.log(e);
-    return res
-      .status(500)
-      .json("error al intentar dar de baja el libro");
+    return res.status(500).json("error al intentar dar de baja el libro");
   }
-}
+};
 
-export const altaBook = async (req: Request, res: Response): Promise<Response> => {
+export const altaBook = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
   if (!req.params.id) {
     return res.status(400).send({
-      message:
-        "FALTA CONTENIDO EN EL CUERPO, falta el id de book",
+      message: "FALTA CONTENIDO EN EL CUERPO, falta el id de book",
     });
   }
-   try {
-   const idBook = parseInt(req.params.id);
-    await pool.query('UPDATE public.books SET state = true WHERE id_book = $1', [idBook]);
-    return res.status(200).json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);   
+  try {
+    const idBook = parseInt(req.params.id);
+    await pool.query(
+      "UPDATE public.books SET state = true WHERE id_book = $1",
+      [idBook]
+    );
+    return res
+      .status(200)
+      .json(`El libro con id ${req.params.id} fue dado de alta exitosamente!`);
   } catch (e) {
     console.log(e);
-    return res
-      .status(500)
-      .json("error al intentar dar de alta el libro");
+    return res.status(500).json("error al intentar dar de alta el libro");
   }
-
-}
+};
 
 // NO FUNCIONA
 export const getTotalBooks = async (
@@ -492,4 +495,3 @@ export const getTotalBooks = async (
     return res.status(500).json("Internal server error");
   }
 };
-
