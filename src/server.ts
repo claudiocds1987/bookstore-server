@@ -2,10 +2,7 @@ import dotenv from "dotenv";
 const path = require('path');
 import { Compramp } from "./compramp";
 // para variables de entorno
-// dotenv.config(); 
-dotenv.config({
-  path: path.resolve(__dirname, process.env.NODE_ENV + '.env')
-});
+dotenv.config(); 
 
 import express from "express";
 //npm install --save multer (middleware para subir archivos)
