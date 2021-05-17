@@ -4,8 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
+const path = require('path');
 // para variables de entorno
-dotenv_1.default.config();
+// dotenv.config(); 
+dotenv_1.default.config({
+    path: path.resolve(__dirname, process.env.NODE_ENV + '.env')
+});
 const express_1 = __importDefault(require("express"));
 //npm install --save multer (middleware para subir archivos)
 var multer = require("multer");
