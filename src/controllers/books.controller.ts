@@ -491,6 +491,6 @@ export const getTotalBooks = async (
     return res.status(200).json(response.rows);
   } catch (e) {
     console.log(e);
-    return res.status(500).json("Internal server error");
+    return res.status(500).json("Internal server error trying get total books");
   }
 };
