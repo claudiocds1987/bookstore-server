@@ -90,7 +90,7 @@ router.get("/filterBooksByAuthor/:name", filterBooksByAuthor);
 // get libros con state = true
 router.get("/filterAvailableBooksByAuthor/:name", filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", getRealDataBook);
-router.get("/books/total", getTotalBooks);
+router.get("/books/get/total", getTotalBooks);
 router.post("/books", upload, createBook);
 router.post("/books/filterAvailableBooks", filterAvailableBooks);
 router.put("/books/:id", upload, updateBook);

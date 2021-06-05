@@ -68,7 +68,7 @@ router.get("/filterBooksByAuthor/:name", books_controller_1.filterBooksByAuthor)
 // get libros con state = true
 router.get("/filterAvailableBooksByAuthor/:name", books_controller_1.filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", books_controller_1.getRealDataBook);
-router.get("/books/total", books_controller_1.getTotalBooks);
+router.get("/books/get/total", books_controller_1.getTotalBooks);
 router.post("/books", upload, books_controller_1.createBook);
 router.post("/books/filterAvailableBooks", books_controller_1.filterAvailableBooks);
 router.put("/books/:id", upload, books_controller_1.updateBook);

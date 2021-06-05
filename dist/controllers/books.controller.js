@@ -335,10 +335,10 @@ exports.altaBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         return res.status(500).json("error al intentar dar de alta el libro");
     }
 });
-// NO FUNCIONA
+// get cantidad de libros totales(con state=true y state=false)
 exports.getTotalBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield database_1.pool.query("select count(books.id_book) as total from books");
+        const response = yield database_1.pool.query('select count(id_book) as "total" from books');
         return res.status(200).json(response.rows);
     }
     catch (e) {

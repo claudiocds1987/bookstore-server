@@ -479,15 +479,14 @@ export const altaBook = async (
     return res.status(500).json("error al intentar dar de alta el libro");
   }
 };
-
-// NO FUNCIONA
+// get cantidad de libros totales(con state=true y state=false)
 export const getTotalBooks = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
   try {
     const response: QueryResult = await pool.query(
-      "select count(books.id_book) as total from books"
+      'select count(id_book) as "total" from books'
     );
     return res.status(200).json(response.rows);
   } catch (e) {
