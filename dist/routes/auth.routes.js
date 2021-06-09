@@ -13,5 +13,4 @@ const auth_controller_1 = require("../controllers/auth.controller");
 // la ruta en realidad es /api/auth/nombre fijarse en archivo server.ts en app.use('/api/auth/', authRoutes);
 router.post('/api/auth/signup/user', auth_controller_1.signup);
 router.post('/api/auth/signin/user', validations.validate(validations.userLoginValidation), auth_controller_1.signin);
-// router.get('/profile', profile);
 exports.default = router;

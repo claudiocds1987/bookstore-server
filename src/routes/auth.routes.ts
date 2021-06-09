@@ -11,7 +11,5 @@ import { signup, signin } from '../controllers/auth.controller'
 // la ruta en realidad es /api/auth/nombre fijarse en archivo server.ts en app.use('/api/auth/', authRoutes);
 router.post('/api/auth/signup/user', signup);
 router.post('/api/auth/signin/user', validations.validate(validations.userLoginValidation), signin);
-// router.get('/profile', profile);
-
 
 export default router;

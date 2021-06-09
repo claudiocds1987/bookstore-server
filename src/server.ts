@@ -48,8 +48,18 @@ app.use(salesDetailRoutes);
 app.use(mercadopagoRoutes);
 app.use(provinciasRoutes);
 
-// para mostrar imagen en el navegador http://localhost:4000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
+// para mostrar imagen en el navegador http://localhost:3000/1f2d312a-a1ef-48c5-a79f-c2a27c48320c.jpg
 app.use(express.static("public"));
+
+// -----------------------------------------------------------------
+// Informo el error si hay datos que no son validos en el request
+app.use((error, req, res, next) => {
+  res.status(400).json({
+      status: 'error',
+      message: error.message,
+  });
+});
+// ------------------------------------------------------------------
 
 // Tomo el puerto del sistema operativo o el 3000
 app.set("port", process.env.PORT || 3000);
