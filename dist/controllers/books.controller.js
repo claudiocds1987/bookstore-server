@@ -343,6 +343,6 @@ exports.getTotalBooks = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (e) {
         console.log(e);
-        return res.status(500).json("Internal server error");
+        return res.status(500).json("Internal server error trying get total books");
     }
 });
