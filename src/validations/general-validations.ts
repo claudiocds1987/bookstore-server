@@ -62,7 +62,7 @@ function userSignUpValidation(data){
     schema.validateSync(data);
 }
 
-function createBookValidation(data){
+function BookValidation(data){
     const schema = yup.object().shape({
         name: yup
             .string()
@@ -106,5 +106,5 @@ module.exports = {
     validate,
     userLoginValidation,
     userSignUpValidation,
-    createBookValidation,
+    BookValidation,
 };

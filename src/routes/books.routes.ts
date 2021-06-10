@@ -93,7 +93,7 @@ router.get("/filterBooksByAuthor/:name", filterBooksByAuthor);
 router.get("/filterAvailableBooksByAuthor/:name", filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", getRealDataBook);
 router.get("/books/get/total", getTotalBooks);
-router.post("/books", upload, validations.validate(validations.createBookValidation), createBook);
+router.post("/books", upload, validations.validate(validations.BookValidation), createBook);
 router.post("/books/filterAvailableBooks", filterAvailableBooks);
 router.put("/books/:id", upload, updateBook);
 router.put("/books/baja/:id", bajaBook);
