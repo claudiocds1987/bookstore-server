@@ -95,7 +95,7 @@ router.get("/getRealDataBook/:id", getRealDataBook);
 router.get("/books/get/total", getTotalBooks);
 router.post("/books", upload, validations.validate(validations.BookValidation), createBook);
 router.post("/books/filterAvailableBooks", filterAvailableBooks);
-router.put("/books/:id", upload, updateBook);
+router.put("/books/:id", upload, validations.validate(validations.BookValidation), updateBook);
 router.put("/books/baja/:id", bajaBook);
 router.put("/books/alta/:id", altaBook);
 
