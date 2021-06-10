@@ -3,8 +3,8 @@ import express from 'express'
 const router = Router();
 const app = express();
 const cors = require('cors'); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
-
-const validations = require('./../validations/auth-validations');
+// validations
+const validations = require('./../validations/general-validations');
 
 import { signup, signin } from '../controllers/auth.controller'
 

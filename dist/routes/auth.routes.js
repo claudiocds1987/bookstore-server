@@ -8,7 +8,8 @@ const express_2 = __importDefault(require("express"));
 const router = express_1.Router();
 const app = express_2.default();
 const cors = require('cors'); // para que el server acepte peticiones de cualquier puerto ej 4200 de Angular
-const validations = require('./../validations/auth-validations');
+// validations
+const validations = require('./../validations/general-validations');
 const auth_controller_1 = require("../controllers/auth.controller");
 // la ruta en realidad es /api/auth/nombre fijarse en archivo server.ts en app.use('/api/auth/', authRoutes);
 router.post('/api/auth/signup/user', validations.validate(validations.userSignUpValidation), auth_controller_1.signup);

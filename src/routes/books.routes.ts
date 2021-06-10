@@ -9,6 +9,8 @@ const uuid = require("uuid");
 const app = express();
 const cors = require("cors");
 const path = require("path");
+// validations
+const validations = require('./../validations/general-validations');
 
 import {
   bajaBook,
@@ -91,7 +93,7 @@ router.get("/filterBooksByAuthor/:name", filterBooksByAuthor);
 router.get("/filterAvailableBooksByAuthor/:name", filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", getRealDataBook);
 router.get("/books/get/total", getTotalBooks);
-router.post("/books", upload, createBook);
+router.post("/books", upload, validations.validate(validations.createBookValidation), createBook);
 router.post("/books/filterAvailableBooks", filterAvailableBooks);
 router.put("/books/:id", upload, updateBook);
 router.put("/books/baja/:id", bajaBook);

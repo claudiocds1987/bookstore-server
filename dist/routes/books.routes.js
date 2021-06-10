@@ -14,6 +14,8 @@ const uuid = require("uuid");
 const app = express_2.default();
 const cors = require("cors");
 const path = require("path");
+// validations
+const validations = require('./../validations/general-validations');
 const books_controller_1 = require("../controllers/books.controller");
 // ******************* PARA HACER UPLOAD DE IMAGE ******************* //
 const storage = multer.diskStorage({
@@ -69,7 +71,7 @@ router.get("/filterBooksByAuthor/:name", books_controller_1.filterBooksByAuthor)
 router.get("/filterAvailableBooksByAuthor/:name", books_controller_1.filterAvailableBooksByAuthor);
 router.get("/getRealDataBook/:id", books_controller_1.getRealDataBook);
 router.get("/books/get/total", books_controller_1.getTotalBooks);
-router.post("/books", upload, books_controller_1.createBook);
+router.post("/books", upload, validations.validate(validations.createBookValidation), books_controller_1.createBook);
 router.post("/books/filterAvailableBooks", books_controller_1.filterAvailableBooks);
 router.put("/books/:id", upload, books_controller_1.updateBook);
 router.put("/books/baja/:id", books_controller_1.bajaBook);

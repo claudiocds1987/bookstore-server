@@ -54,8 +54,46 @@ function userSignUpValidation(data) {
     });
     schema.validateSync(data);
 }
+function createBookValidation(data) {
+    const schema = yup.object().shape({
+        name: yup
+            .string()
+            .max(50, 'name permite hasta 50 caracteres')
+            .required('el name esta vacio'),
+        year: yup
+            .number('year debe ser un numero')
+            .required('year esta vacio'),
+        id_author: yup
+            .number('id_author debe ser un numero')
+            .required('id_author esta vacio'),
+        id_category: yup
+            .number('id_category debe ser un numero')
+            .required('id_category esta vacio'),
+        id_editorial: yup
+            .number('id_editorial debe ser un numero')
+            .required('id_editorial esta vacio'),
+        description: yup
+            .string()
+            .max(2500, 'description permite hasta 2500 caracteres')
+            .required('description esta vacio'),
+        quantity: yup
+            .number('quantity debe ser un numero')
+            .required('quantity esta vacio'),
+        price: yup
+            .number('price debe ser un numero')
+            .required('price esta vacio'),
+        // url_image: yup
+        //     .string()
+        //     .required('url_image esta vacio'),
+        state: yup
+            .boolean()
+            .required('state esta vacio'),
+    });
+    schema.validateSync(data);
+}
 module.exports = {
     validate,
     userLoginValidation,
-    userSignUpValidation
+    userSignUpValidation,
+    createBookValidation,
 };
