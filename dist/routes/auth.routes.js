@@ -11,6 +11,6 @@ const cors = require('cors'); // para que el server acepte peticiones de cualqui
 const validations = require('./../validations/auth-validations');
 const auth_controller_1 = require("../controllers/auth.controller");
 // la ruta en realidad es /api/auth/nombre fijarse en archivo server.ts en app.use('/api/auth/', authRoutes);
-router.post('/api/auth/signup/user', auth_controller_1.signup);
+router.post('/api/auth/signup/user', validations.validate(validations.userSignUpValidation), auth_controller_1.signup);
 router.post('/api/auth/signin/user', validations.validate(validations.userLoginValidation), auth_controller_1.signin);
 exports.default = router;

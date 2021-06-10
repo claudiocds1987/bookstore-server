@@ -78,7 +78,7 @@ exports.signin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 email: data.rows[0].email,
                 token: token,
             };
-            console.log("usuario logeado con token: " + token);
+            //console.log("usuario logeado con token: " + token);
             // enviando el token a los headers
             res.header("auth-token", token).json(dataUser);
         }
